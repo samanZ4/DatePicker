@@ -1,30 +1,35 @@
 <template>
-
-    <input
-      type="text"
-      @click="show = true"
-      placeholder="Pick Date ..."
-      readonly
-    />
-
-
-  <Overlay :isActive="show" :class="{ showOverlay: show }">
-
-  </Overlay>
+  <slot name="activator"></slot>
+  <div
+    class="datePicker__Overlay"
+    :class="{ showOverlay: isVisible }"
+  >
+    <div
+      class="datePicker__Overlay--InnerContent"
+      @click="(e) => handleFocus(e.target)"
+    >
+      <CalendarTab :class="{ animate__Calender: isVisible }" />
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import Overlay from '../shared/Overlay.vue';
+<script setup>
+import CalendarTab from '../calendar/CalendarTab.vue';
 
-const show = ref(false);
+const props = defineProps({
+  isVisible: {
+    type: Boolean,
+    required: true,
+  },
+});
+const emit = defineEmits();
+
+const closeModal = () => {
+  emit('update:isVisible', false);
+};
+
+const handleFocus = (event) => {
+  const overlay = document.querySelector('.datePicker__Overlay--InnerContent');
+  event === overlay ? closeModal() : null;
+};
 </script>
-
-<style lang="scss">
-.showOverlay {
-  z-index: 1000 !important;
-  opacity: 0.5 !important;
-  visibility: visible !important;
-  transform: scale(1.3) !important;
-}
-</style>

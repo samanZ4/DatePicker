@@ -1,0 +1,16 @@
+.calender__Container {
+  width: 300px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 28px;
+  transform: rotate(180deg);
+  transition: all 0.3s ease-in-out;
+  .calender__Date {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+.animate__Calender {
+  transform: rotate(0deg);
+}

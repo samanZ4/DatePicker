@@ -1,11 +1,11 @@
 <template>
-  <DatePicker />
+  <Index />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
 
-const DatePicker = defineAsyncComponent(
-  () => import('../components/datePicker/DatePicker.vue')
+const Index = defineAsyncComponent(
+  () => import('../components/Index.vue')
 );
 </script>
