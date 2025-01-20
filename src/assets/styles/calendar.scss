@@ -1,16 +1,134 @@
+$primary-400: #bd3a3c;
+$natural-800: #505050;
+
 .calender__Container {
   width: 300px;
-  height: 300px;
+  height: auto;
+  opacity: 0;
   background-color: #fff;
   border-radius: 28px;
-  transform: rotate(180deg);
+  box-shadow: 0px 0px 15px #666666;
   transition: all 0.3s ease-in-out;
   .calender__Date {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px 24px 12px 24px;
+    & > span:first-child {
+      color: $primary-400;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    & > span:last-child {
+      color: $natural-800;
+      font-size: 24px;
+      font-weight: 400;
+    }
+  }
+  .calender__PickingSection {
+    padding: 12px;
+    .calender__PickingSection--controls {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8px 0 12px;
+      & > div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      & > div:last-child {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+  }
+
+  // Responsive Querys
+  @media only screen and (min-width: 0px) and (max-width: 425px) {
+    width: 70%;
   }
 }
+.calender__DaysContainer {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .calender__WeekDays {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    align-self: stretch;
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: hidden;
+    div {
+      padding: 2px;
+      text-align: center;
+    }
+  }
+
+  .calender__Days {
+    display: grid;
+    align-self: stretch;
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: hidden;
+    width: 100%;
+    div {
+      border-radius: 50%;
+      padding: 10px 0px;
+      font-size: 12px;
+      font-weight: 400;
+      transition: 0.2s ease-in;
+      text-align: center;
+      width: 100%;
+    }
+
+    .isValidDay:hover {
+      background-color: $primary-400;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}
+
+.calender__ActionBtns {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  padding: 12px 16px;
+  button {
+    transition: all 0.1s ease-in-out;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
+  & > button:first-child {
+    background-color: $primary-400;
+    color: #fff;
+  }
+  & > button:last-child {
+    background-color: transparent;
+    color: $primary-400;
+  }
+
+  & > button:first-child:hover {
+    background-color: #88292b;
+  }
+}
+
 .animate__Calender {
-  transform: rotate(0deg);
+  opacity: 1;
+  height: auto;
+}
+.selectedDay {
+  background-color: $primary-400 !important;
+  color: #fff !important;
 }
