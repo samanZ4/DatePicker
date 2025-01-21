@@ -5,9 +5,7 @@
     </div>
     <div class="calender__Days">
       <div
-        v-for="day in new Date().getDay() > 0
-          ? new Date().getDay() + 1
-          : new Date().getDay()"
+        v-for="day in new Date().getDay()"
         :key="day"
       >
         -
@@ -15,11 +13,8 @@
       <div
         class="isValidDay"
         :class="{ selectedDay: dateStore.fullDate.shamsi.day === index + 1 }"
-        @click="
-          day ? (dateStore.fullDate.shamsi.day = day) : null,
-            console.log(dateStore.fullDate)
-        "
-        v-for="(day, index) in 30"
+        @click="day ? (dateStore.fullDate.shamsi.day = day) : null"
+        v-for="(day, index) in days.daysCount"
       >
         <span>{{ day }}</span>
       </div>
@@ -28,20 +23,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import daysOfWeek from './types';
-import { shamsiToGregorian } from '../../utils/time';
+import { toGregorian, toJalaali } from '../../utils/time';
 import { useDateStore } from '../../stores';
 
 const dateStore = useDateStore();
 
-// مثال استفاده
-const shamsiDate = { year: 782, month: 10, day: 4 };
-const gregorianDate = shamsiToGregorian(
-  shamsiDate.year,
-  shamsiDate.month,
-  shamsiDate.day
-);
+const days = {
+  cabise: () => {
+    1403 % 4 === 3 ? true : false;
+  },
+  daysCount: 30,
+};
 
-console.log(gregorianDate); // خروجی تاریخ میلادی
+watch(
+  () => dateStore.fullDate.shamsi.day,
+  () => {
+    const result = toGregorian(
+      dateStore.fullDate.shamsi.year,
+      dateStore.fullDate.shamsi.month,
+      dateStore.fullDate.shamsi.day
+    );
+    dateStore.fullDate.miladi.day = result.gd;
+    dateStore.fullDate.miladi.month = result.gm;
+    dateStore.fullDate.miladi.year = result.gy;
+    console.log(dateStore.fullDate, result);
+  }
+);
 </script>

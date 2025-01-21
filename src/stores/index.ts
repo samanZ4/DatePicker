@@ -3,10 +3,15 @@ import { type dateTypes } from '../models/interfaces';
 
 export const useDateStore = defineStore('date', {
   state: () => ({
+    currentDate: {
+      day: new Date().getDate(),
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
+
     fullDate: {
-      shamsi: {
-        day: new Date().getDay(),
-      },
+      shamsi: {},
+      miladi: {},
     } as dateTypes,
   }),
   actions: {},

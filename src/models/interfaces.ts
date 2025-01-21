@@ -3,12 +3,10 @@ export interface dateTypes {
     day: number;
     month: number;
     year: number;
-    converted: string | null;
   };
   miladi: {
     day: number;
     month: number;
     year: number;
-    converted: string | null;
   };
 }
