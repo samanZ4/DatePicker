@@ -5,37 +5,45 @@
     </div>
     <div class="calender__Days">
       <div
-        v-for="day in new Date().getDay()"
+        v-for="day in dateStore.missedDays"
         :key="day"
       >
         -
       </div>
       <div
         class="isValidDay"
-        :class="{ selectedDay: dateStore.fullDate.shamsi.day === index + 1 }"
+        :class="{ selected: dateStore.fullDate.shamsi.day === index + 1 }"
         @click="day ? (dateStore.fullDate.shamsi.day = day) : null"
-        v-for="(day, index) in days.daysCount"
+        v-for="(day, index) in daysCount"
       >
         <span>{{ day }}</span>
       </div>
     </div>
+    {{ daysCountGenerating }}
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import daysOfWeek from './types';
-import { toGregorian, toJalaali } from '../../utils/time';
+import { toGregorian } from '../../utils/time';
 import { useDateStore } from '../../stores';
 
 const dateStore = useDateStore();
 
-const days = {
-  cabise: () => {
-    1403 % 4 === 3 ? true : false;
-  },
-  daysCount: 30,
-};
+const daysCount = ref(30);
+
+const daysCountGenerating = computed(() => {
+  const cabise = dateStore.fullDate.shamsi.year % 4 === 3 ? true : false;
+
+  if (cabise && dateStore.fullDate.shamsi.month === 12) {
+    daysCount.value = 30;
+  } else if (!cabise && dateStore.fullDate.shamsi.month === 12) {
+    daysCount.value = 29;
+  } else if (dateStore.fullDate.shamsi.month <= 6) {
+    daysCount.value = 31;
+  }
+});
 
 watch(
   () => dateStore.fullDate.shamsi.day,
@@ -48,7 +56,6 @@ watch(
     dateStore.fullDate.miladi.day = result.gd;
     dateStore.fullDate.miladi.month = result.gm;
     dateStore.fullDate.miladi.year = result.gy;
-    console.log(dateStore.fullDate, result);
   }
 );
 </script>

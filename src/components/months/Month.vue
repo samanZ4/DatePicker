@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useDateStore } from '../../stores';
-import { toGregorian, toJalaali } from '../../utils/time';
+import { toGregorian } from '../../utils/time';
 
 const dateStore = useDateStore();
 
@@ -34,16 +34,55 @@ const reducerMonth = () => {
   dateStore.fullDate.miladi.year = miladi.gy;
 };
 
+function getMissedDays() {
+  const miladi = toGregorian(
+    dateStore.fullDate.shamsi.year,
+    dateStore.fullDate.shamsi.month,
+    1
+  );
+  switch (new Date(`${miladi.gy}-${miladi.gm}-${miladi.gd}`).getDay()) {
+    case 0:
+      dateStore.missedDays = 1;
+      break;
+
+    case 1:
+      dateStore.missedDays = 2;
+      break;
+    case 2:
+      dateStore.missedDays = 3;
+      break;
+    case 3:
+      dateStore.missedDays = 4;
+      break;
+    case 4:
+      dateStore.missedDays = 5;
+      break;
+    case 5:
+      dateStore.missedDays = 6;
+      break;
+    case 6:
+      dateStore.missedDays = 0;
+      break;
+
+    default:
+      break;
+  }
+}
+
+onMounted(() => {
+  getMissedDays();
+});
+
 watch(
   () => dateStore.fullDate.shamsi.month,
   () => {
-    console.log(dateStore.fullDate);
+    getMissedDays();
   }
 );
 </script>
 
 <template>
-  <div @click="reducerMonth">
+  <div @click="reducerMonth()">
     <slot name="pre">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -58,19 +97,18 @@ watch(
         /></svg
     ></slot>
   </div>
-  <div @click="increamentMonth">
-    <slot name="next">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <path
-          d="M15 20C14.7348 19.9999 14.4805 19.8946 14.293 19.707L7.29303 12.707C7.10556 12.5195 7.00024 12.2652 7.00024 12C7.00024 11.7348 7.10556 11.4805 7.29303 11.293L14.293 4.29301C14.3853 4.19749 14.4956 4.12131 14.6176 4.0689C14.7396 4.01649 14.8709 3.98891 15.0036 3.98775C15.1364 3.9866 15.2681 4.0119 15.391 4.06218C15.5139 4.11246 15.6255 4.18672 15.7194 4.28061C15.8133 4.3745 15.8876 4.48615 15.9379 4.60905C15.9881 4.73195 16.0134 4.86363 16.0123 4.99641C16.0111 5.12919 15.9835 5.26041 15.9311 5.38241C15.8787 5.50441 15.8025 5.61476 15.707 5.707L9.41403 12L15.707 18.293C15.8468 18.4329 15.942 18.611 15.9806 18.805C16.0192 18.9989 15.9994 19.2 15.9237 19.3827C15.848 19.5654 15.7199 19.7215 15.5555 19.8314C15.3911 19.9413 15.1978 20 15 20Z"
-          fill="#BD3A3C"
-        /></svg
-    ></slot>
+  <div @click="increamentMonth()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M15 20C14.7348 19.9999 14.4805 19.8946 14.293 19.707L7.29303 12.707C7.10556 12.5195 7.00024 12.2652 7.00024 12C7.00024 11.7348 7.10556 11.4805 7.29303 11.293L14.293 4.29301C14.3853 4.19749 14.4956 4.12131 14.6176 4.0689C14.7396 4.01649 14.8709 3.98891 15.0036 3.98775C15.1364 3.9866 15.2681 4.0119 15.391 4.06218C15.5139 4.11246 15.6255 4.18672 15.7194 4.28061C15.8133 4.3745 15.8876 4.48615 15.9379 4.60905C15.9881 4.73195 16.0134 4.86363 16.0123 4.99641C16.0111 5.12919 15.9835 5.26041 15.9311 5.38241C15.8787 5.50441 15.8025 5.61476 15.707 5.707L9.41403 12L15.707 18.293C15.8468 18.4329 15.942 18.611 15.9806 18.805C16.0192 18.9989 15.9994 19.2 15.9237 19.3827C15.848 19.5654 15.7199 19.7215 15.5555 19.8314C15.3911 19.9413 15.1978 20 15 20Z"
+        fill="#BD3A3C"
+      />
+    </svg>
   </div>
 </template>

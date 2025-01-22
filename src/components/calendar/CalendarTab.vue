@@ -9,20 +9,20 @@
             (m) => m.value === dateStore.fullDate.shamsi.month
           )[0].title
         }}
-        1403
+        {{ dateStore.fullDate.shamsi.year }}
       </span>
     </div>
     <hr />
     <div class="calender__PickingSection">
       <div class="calender__PickingSection--controls">
         <div>
-          <div>
+          <div @click="dateStore.isPickingYear = !dateStore.isPickingYear">
             {{
               monthOfYear.filter(
                 (m) => m.value === dateStore.fullDate.shamsi.month
               )[0].title
             }}
-            1403
+            {{ dateStore.fullDate.shamsi.year }}
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,12 +42,13 @@
         </div>
       </div>
       <div>
-        <Days />
+        <Days v-if="!dateStore.isPickingYear" />
+        <Year v-else />
       </div>
     </div>
     <hr />
     <div class="calender__ActionBtns">
-      <button>تایید</button>
+      <button @click="props.update(), props.closeModal()">تایید</button>
       <button @click="props.closeModal()">انصراف</button>
     </div>
   </div>
@@ -55,12 +56,13 @@
 
 <script setup lang="ts">
 import Days from '../days/Days.vue';
-import Month from '../month/Month.vue';
-import monthOfYear from '../month/types';
+import Month from '../months/Month.vue';
+import Year from '../years/Year.vue';
+import monthOfYear from '../months/types';
 import { toGregorian, toJalaali } from '../../utils/time';
 import { useDateStore } from '../../stores';
 
-const props = defineProps(['closeModal']);
+const props = defineProps(['closeModal', 'update']);
 const dateStore = useDateStore();
 
 const shamsi = toJalaali(
@@ -78,6 +80,4 @@ dateStore.fullDate.shamsi.year = shamsi.jy;
 dateStore.fullDate.miladi.day = miladi.gd;
 dateStore.fullDate.miladi.month = miladi.gm;
 dateStore.fullDate.miladi.year = miladi.gy;
-
-console.log(dateStore.fullDate);
 </script>

@@ -13,6 +13,10 @@ export const useDateStore = defineStore('date', {
       shamsi: {},
       miladi: {},
     } as dateTypes,
+
+    isPickingYear: false,
+
+    missedDays: 0,
   }),
   actions: {},
 });
