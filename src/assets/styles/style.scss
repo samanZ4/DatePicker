@@ -1,14 +1,8 @@
-@import url(./_fonts.scss);
 @import url(./calendar.scss);
 
 $overlayCover: #00000083;
 $divider: #b441444d;
 
-* {
-  margin: 0;
-  box-sizing: border-box;
-  font-family: IRANSansX;
-}
 .datePicker__Overlay {
   -webkit-user-select: none;
   -ms-user-select: none;

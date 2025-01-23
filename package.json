@@ -1,8 +1,16 @@
 {
-  "name": "datepicker",
+  "name": "fara-date",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "0.0.1",
+  "main": "./dist/fara-date.umd.js",
+  "module": "./dist/fara-date.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/fara-date.es.js",
+      "require": "./dist/fara-date.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
