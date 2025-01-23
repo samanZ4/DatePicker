@@ -2,11 +2,12 @@
 import { onMounted, watch } from 'vue';
 import { useDateStore } from '../../stores';
 import { toGregorian } from '../../utils/time';
+import monthOfYear from '../months/types';
 
 const dateStore = useDateStore();
 
 const increamentMonth = () => {
-  dateStore.fullDate.shamsi.month === 12
+  dateStore.fullDate.shamsi.month > 12
     ? (dateStore.fullDate.shamsi.month = 1)
     : dateStore.fullDate.shamsi.month++;
 
@@ -18,9 +19,14 @@ const increamentMonth = () => {
   dateStore.fullDate.miladi.day = miladi.gd;
   dateStore.fullDate.miladi.month = miladi.gm;
   dateStore.fullDate.miladi.year = miladi.gy;
+
+  if (dateStore.fullDate.shamsi.month > 12) {
+    dateStore.fullDate.shamsi.month = 1;
+    dateStore.fullDate.shamsi.year++;
+  }
 };
 const reducerMonth = () => {
-  dateStore.fullDate.shamsi.month === 1
+  dateStore.fullDate.shamsi.month < 1
     ? (dateStore.fullDate.shamsi.month = 12)
     : dateStore.fullDate.shamsi.month--;
 
@@ -32,6 +38,11 @@ const reducerMonth = () => {
   dateStore.fullDate.miladi.day = miladi.gd;
   dateStore.fullDate.miladi.month = miladi.gm;
   dateStore.fullDate.miladi.year = miladi.gy;
+
+  if (dateStore.fullDate.shamsi.month < 1) {
+    dateStore.fullDate.shamsi.month = 12;
+    dateStore.fullDate.shamsi.year--;
+  }
 };
 
 function getMissedDays() {
@@ -83,19 +94,24 @@ watch(
 
 <template>
   <div @click="reducerMonth()">
-    <slot name="pre">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <path
-          d="M8.99997 20C8.80222 20 8.60892 19.9413 8.44451 19.8314C8.2801 19.7215 8.15196 19.5653 8.07629 19.3826C8.00062 19.1999 7.98082 18.9989 8.01939 18.805C8.05795 18.611 8.15316 18.4328 8.29297 18.293L14.586 12L8.29297 5.707C8.11081 5.51839 8.01002 5.26579 8.0123 5.00359C8.01457 4.7414 8.11974 4.49058 8.30515 4.30518C8.49056 4.11977 8.74137 4.0146 9.00357 4.01232C9.26577 4.01004 9.51837 4.11084 9.70697 4.293L16.707 11.293C16.8944 11.4805 16.9998 11.7348 16.9998 12C16.9998 12.2652 16.8944 12.5195 16.707 12.707L9.70697 19.707C9.51948 19.8945 9.26516 19.9999 8.99997 20Z"
-          fill="#BD3A3C"
-        /></svg
-    ></slot>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M8.99997 20C8.80222 20 8.60892 19.9413 8.44451 19.8314C8.2801 19.7215 8.15196 19.5653 8.07629 19.3826C8.00062 19.1999 7.98082 18.9989 8.01939 18.805C8.05795 18.611 8.15316 18.4328 8.29297 18.293L14.586 12L8.29297 5.707C8.11081 5.51839 8.01002 5.26579 8.0123 5.00359C8.01457 4.7414 8.11974 4.49058 8.30515 4.30518C8.49056 4.11977 8.74137 4.0146 9.00357 4.01232C9.26577 4.01004 9.51837 4.11084 9.70697 4.293L16.707 11.293C16.8944 11.4805 16.9998 11.7348 16.9998 12C16.9998 12.2652 16.8944 12.5195 16.707 12.707L9.70697 19.707C9.51948 19.8945 9.26516 19.9999 8.99997 20Z"
+        fill="#BD3A3C"
+      />
+    </svg>
+  </div>
+  <div>
+    {{
+      monthOfYear.filter((m) => m.value === dateStore.fullDate.shamsi.month)[0]
+        .title
+    }}
   </div>
   <div @click="increamentMonth()">
     <svg

@@ -2,10 +2,7 @@
   <div class="calender__YearsContainer">
     <div
       :class="{ selected: dateStore.fullDate.shamsi.year === year }"
-      @click="
-        year ? (dateStore.fullDate.shamsi.year = year) : null,
-          console.log(dateStore.fullDate.shamsi.year)
-      "
+      @click="year ? (dateStore.fullDate.shamsi.year = year) : null"
       v-for="year in reversedYearsCount"
     >
       <span>{{ year }}</span>
@@ -14,17 +11,25 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { toGregorian, toJalaali } from '../../utils/time';
 import { useDateStore } from '../../stores';
 
 const dateStore = useDateStore();
 
-const yearsCount = Array.from(
-  { length: dateStore.fullDate.shamsi.year - 1320 },
-  (_, index) => 1320 + index + 1
-);
-const reversedYearsCount = yearsCount.reverse();
+const yearsCount = computed(() => {
+  const result = toJalaali(
+    dateStore.currentDate.year,
+    dateStore.currentDate.month,
+    dateStore.currentDate.day
+  );
+
+  return Array.from(
+    { length: result.jy - 1320 },
+    (_, index) => 1320 + index + 1
+  );
+});
+const reversedYearsCount = yearsCount.value.reverse();
 
 watch(
   () => dateStore.fullDate.shamsi.year,

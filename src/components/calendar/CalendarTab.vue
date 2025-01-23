@@ -15,13 +15,8 @@
     <hr />
     <div class="calender__PickingSection">
       <div class="calender__PickingSection--controls">
-        <div>
-          <div @click="dateStore.isPickingYear = !dateStore.isPickingYear">
-            {{
-              monthOfYear.filter(
-                (m) => m.value === dateStore.fullDate.shamsi.month
-              )[0].title
-            }}
+        <div @click="dateStore.isPickingYear = !dateStore.isPickingYear">
+          <div>
             {{ dateStore.fullDate.shamsi.year }}
           </div>
           <svg
@@ -42,13 +37,24 @@
         </div>
       </div>
       <div>
-        <Days v-if="!dateStore.isPickingYear" />
-        <Year v-else />
+        <Transition
+          name="fade"
+          mode="out-in"
+        >
+          <Days v-if="!dateStore.isPickingYear" />
+          <Year v-else />
+        </Transition>
       </div>
     </div>
     <hr />
     <div class="calender__ActionBtns">
-      <button @click="props.update(), props.closeModal()">تایید</button>
+      <button
+        @click="
+          props.update(), props.closeModal(), (dateStore.isPickingYear = false)
+        "
+      >
+        تایید
+      </button>
       <button @click="props.closeModal()">انصراف</button>
     </div>
   </div>
@@ -81,3 +87,15 @@ dateStore.fullDate.miladi.day = miladi.gd;
 dateStore.fullDate.miladi.month = miladi.gm;
 dateStore.fullDate.miladi.year = miladi.gy;
 </script>
+
+<style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

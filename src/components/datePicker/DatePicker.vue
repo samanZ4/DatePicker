@@ -26,7 +26,6 @@ const dateStore = useDateStore();
 const props = defineProps({
   isVisible: {
     type: Boolean,
-    required: true,
   },
   modelValue: {
     type: Object,
