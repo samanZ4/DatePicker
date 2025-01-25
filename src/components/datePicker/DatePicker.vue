@@ -23,14 +23,7 @@ import { useDateStore } from '../../stores';
 
 const dateStore = useDateStore();
 
-const props = defineProps({
-  isVisible: {
-    type: Boolean,
-  },
-  modelValue: {
-    type: Object,
-  },
-});
+const props = defineProps(['isVisible', 'modelValue']);
 const emit = defineEmits(['update:isVisible', 'update:modelValue']);
 
 const closeModal = () => {
